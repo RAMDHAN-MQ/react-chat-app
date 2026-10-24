@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import InputAuth from "../Input/InputAuth";
 
@@ -27,12 +28,18 @@ export default function CardAuth({ type }) {
         {type === "login" ? "Login" : "Register"}
       </h1>
       <div className="flex mb-4">
-        <button className="px-3 py-2 flex-1 rounded-l-xl shadow-sm cursor-pointer bg-blue-500 text-white">
+        <Link
+          className={`px-3 py-2 flex-1 rounded-l-xl shadow-sm cursor-pointer hover:opacity-90 ${type === "login" ? "bg-blue-500 text-white" : "bg-gray-100 text-black"}`}
+          to={"/auth/login"}
+        >
           Login
-        </button>
-        <button className="px-3 py-2 flex-1 rounded-r-xl shadow-sm cursor-pointer bg-gray-100 text-black">
+        </Link>
+        <Link
+          className={`px-3 py-2 flex-1 rounded-r-xl shadow-sm cursor-pointer hover:opacity-90 ${type !== "login" ? "bg-blue-500 text-white" : "bg-gray-100 text-black"}`}
+          to={"/auth/register"}
+        >
           Register
-        </button>
+        </Link>
       </div>
       {card}
       <Button
