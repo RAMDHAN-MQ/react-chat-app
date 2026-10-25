@@ -17,7 +17,9 @@ export default function CardAuth({ type }) {
     card = (
       <>
         <form className="mb-4">
-          <InputAuth type={"email"} placeholder={"Email address"} />
+          <InputAuth type={"text"} placeholder={"Nama"} />
+          <InputAuth type={"email"} placeholder={"Email"} />
+          <InputAuth type={"password"} placeholder={"Password"} />
         </form>
       </>
     );
@@ -30,13 +32,13 @@ export default function CardAuth({ type }) {
       <div className="flex mb-4">
         <Link
           className={`px-3 py-2 flex-1 rounded-l-xl shadow-sm cursor-pointer hover:opacity-90 ${type === "login" ? "bg-blue-500 text-white" : "bg-gray-100 text-black"}`}
-          to={"/auth/login"}
+          to={"/"}
         >
           Login
         </Link>
         <Link
           className={`px-3 py-2 flex-1 rounded-r-xl shadow-sm cursor-pointer hover:opacity-90 ${type !== "login" ? "bg-blue-500 text-white" : "bg-gray-100 text-black"}`}
-          to={"/auth/register"}
+          to={"/register"}
         >
           Register
         </Link>
