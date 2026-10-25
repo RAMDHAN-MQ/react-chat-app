@@ -14,7 +14,7 @@ const PORT = process.env.PORT;
 
 // Koneksi ke MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB terhubung!"))
   .catch((err) => console.error(err));
 

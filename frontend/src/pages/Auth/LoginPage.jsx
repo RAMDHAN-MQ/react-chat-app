@@ -8,6 +8,6 @@ export default function LoginPage() {
       .get("http://localhost:5001/")
       .then((res) => console.log(res.data))
       .catch((error) => console.error(error));
-  });
+  },[]);
   return <CardAuth type={"login"} />;
 }
