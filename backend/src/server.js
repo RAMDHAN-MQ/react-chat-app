@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import authRoutes from "./routes/authRoutes.js";
+import { connectDB } from "./config/db.js";
+
 // konfigurasi
 dotenv.config();
 const app = express();
@@ -10,18 +13,13 @@ app.use(cors());
 app.use(express.json());
 
 // port
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5001;
 
-// Koneksi ke MongoDB
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB terhubung!"))
-  .catch((err) => console.error(err));
+// connect db
+connectDB();
 
-app.get("/", (req, res) => {
-  res.status(200);
-  res.json({ message: "halooo" });
-});
+// routes
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server berjalan di port ${PORT}`);
