@@ -11,6 +11,7 @@ export default function InputAuth({ type, placeholder, value, onChange }) {
   } else {
     tipe = type;
   }
+
   return (
     <div className="relative w-full">
       <input
