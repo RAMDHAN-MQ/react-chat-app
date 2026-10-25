@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CardAuth from "../../components/ui/Card/CardAuth";
 import InputAuth from "../../components/ui/Input/InputAuth";
+import axios from "axios";
 
 export default function RegisterPage() {
   const [value, setValue] = useState({
@@ -9,8 +10,34 @@ export default function RegisterPage() {
     password: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleDataBaru(event) {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/auth/register",
+        {
+          nama: value.nama,
+          email: value.email,
+          password: value.password,
+        },
+      );
+
+      console.log(response);
+      setErrorMessage("");
+    } catch (error) {
+      const pesan = error.response.data.message;
+      console.error(`Terjadi Error : ${pesan}`);
+      setErrorMessage(pesan);
+    }
+  }
   return (
-    <CardAuth type={"Register"}>
+    <CardAuth type={"Register"} onSubmit={handleDataBaru}>
+      {errorMessage.length >= 0 && (
+        <span className="text-red-500 text-sm">{errorMessage}</span>
+      )}
       <InputAuth
         type={"text"}
         placeholder={"Masukkan nama anda..."}

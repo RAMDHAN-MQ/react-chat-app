@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 
-export default function CardAuth({ type, children }) {
+export default function CardAuth({ type, children, onSubmit }) {
   return (
     <div className="w-100 bg-white p-5 rounded-xl shadow-lg text-center">
       <h1 className="font-semibold mb-4 text-2xl">{type}</h1>
@@ -19,10 +19,15 @@ export default function CardAuth({ type, children }) {
           Register
         </Link>
       </div>
-      <form action="" className="mb-4">
+      <form onSubmit={(e) => onSubmit(e)}>
         {children}
+        <Button
+          text={type}
+          type={"submit"}
+          variant={"primary"}
+          width={"full"}
+        />
       </form>
-      <Button text={type} type={"button"} variant={"primary"} width={"full"} />
     </div>
   );
 }
