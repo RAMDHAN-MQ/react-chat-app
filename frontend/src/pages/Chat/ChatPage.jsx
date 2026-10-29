@@ -48,18 +48,18 @@ export default function ChatPage() {
 
         <div className="w-9/12 bg-gray-300 pt-1 pl-1">
           <div className="h-full flex flex-col justify-between">
-            <div className="p-3 bg-blue-500 flex justify-between items-center min-h-[10vh]">
+            <div className="p-3 bg-white flex justify-between items-center min-h-[10vh] mb-1">
               <div className="flex items-center gap-4">
-                <button className="flex items-center rounded-full overflow-hidden ring ring-white ring-offset-1">
+                <button className="flex items-center rounded-full overflow-hidden ring ring-blue-500 ring-offset-1">
                   <img
                     src="https://picsum.photos/200"
                     alt="foto profile"
-                    className="size-8"
+                    className="size-10"
                   />
                 </button>
                 <div className="flex flex-col">
-                  <span className="text-white">Nama</span>
-                  <span className="text-gray-300 text-xs">Last seen 12:20</span>
+                  <span className="text-black">Nama</span>
+                  <span className="text-gray-400 text-xs">Last seen 12:20</span>
                 </div>
               </div>
             </div>
