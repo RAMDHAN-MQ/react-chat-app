@@ -2,6 +2,8 @@ import { useState } from "react";
 import CardAuth from "../../components/ui/Card/CardAuth";
 import InputAuth from "../../components/ui/Input/InputAuth";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const [value, setValue] = useState({
@@ -9,8 +11,7 @@ export default function RegisterPage() {
     email: "",
     password: "",
   });
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   async function handleDataBaru(event) {
     event.preventDefault();
@@ -24,24 +25,19 @@ export default function RegisterPage() {
           password: value.password,
         },
       );
-
-      console.log(response);
-      setErrorMessage("");
+      toast.success(response.data.message);
+      navigate("/");
     } catch (error) {
-      const pesan = error.response.data.message;
-      console.error(`Terjadi Error : ${pesan}`);
-      setErrorMessage(pesan);
+      toast.error(error.response.data.message);
     }
   }
   return (
     <CardAuth type={"Register"} onSubmit={handleDataBaru}>
-      {errorMessage.length >= 0 && (
-        <span className="text-red-500 text-sm">{errorMessage}</span>
-      )}
       <InputAuth
         type={"text"}
         placeholder={"Masukkan nama anda..."}
         value={value.nama}
+        required={true}
         onChange={(e) =>
           setValue({
             ...value,
@@ -53,6 +49,7 @@ export default function RegisterPage() {
         type={"email"}
         placeholder={"Masukkan email anda..."}
         value={value.email}
+        required={true}
         onChange={(e) =>
           setValue({
             ...value,
@@ -64,6 +61,7 @@ export default function RegisterPage() {
         type={"password"}
         placeholder={"Masukkan password anda..."}
         value={value.password}
+        required={true}
         onChange={(e) =>
           setValue({
             ...value,

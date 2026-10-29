@@ -2,7 +2,13 @@ import { Eye } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function InputAuth({ type, placeholder, value, onChange }) {
+export default function InputAuth({
+  type,
+  placeholder,
+  value,
+  onChange,
+  required = false,
+}) {
   const [isShow, setIsShow] = useState(false);
 
   let tipe;
@@ -19,6 +25,7 @@ export default function InputAuth({ type, placeholder, value, onChange }) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        required={required}
         className="w-full p-2 border-2 border-gray-200 rounded-xl mb-2 focus:outline-blue-500 focus:ring-2 focus:ring-blue-100"
       />
       {type === "password" && (

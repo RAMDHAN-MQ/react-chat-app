@@ -8,11 +8,11 @@ export const postLogin = async (req, res) => {
     const user = await Users.findOne({ email });
 
     if (!user)
-      return res.status(400).json({ message: "email tidak ditemukan" });
+      return res.status(400).json({ message: "Email tidak ditemukan" });
 
     const cekPassword = await bcrypt.compare(password, user.password);
     if (!cekPassword)
-      return res.status(400).json({ message: "password salah" });
+      return res.status(400).json({ message: "Password salah" });
 
     res.status(200).json({
       id: user._id,
@@ -24,17 +24,19 @@ export const postLogin = async (req, res) => {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }
 };
+
 export const postRegister = async (req, res) => {
   try {
     const { nama, email, password } = req.body;
 
     const cekEmail = await Users.findOne({ email });
-    if (cekEmail) return res.status(400).json({ message: "email sudah ada" });
+    if (cekEmail)
+      return res.status(400).json({ message: "Email sudah terdaftar!" });
 
     const userBaru = new Users({ nama, email, password });
     await userBaru.save();
 
-    res.status(201).json({ message: "User baru berhasil dibuat!" });
+    res.status(201).json({ message: "Akun berhasil dibuat!" });
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }
