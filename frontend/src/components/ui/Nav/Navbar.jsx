@@ -1,7 +1,7 @@
 import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-export default function Navbar({ children }) {
+export default function Navbar({ children, nama, username }) {
   const [isDrop, setIsDrop] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -17,7 +17,7 @@ export default function Navbar({ children }) {
     return () => {
       document.removeEventListener("click", hanldeClickOutsideNav);
     };
-  });
+  }, []);
 
   return (
     <nav className="bg-blue-500 p-5 flex justify-between items-center">
@@ -30,7 +30,7 @@ export default function Navbar({ children }) {
         </button>
         <div className="relative" ref={dropdownRef}>
           <button
-            className=" flex items-center rounded-full overflow-hidden ring ring-white ring-offset-1 cursor-pointer"
+            className=" flex items-center gap-2 rounded-full overflow-hidden ring ring-white ring-offset-1 cursor-pointer"
             onClick={() => setIsDrop(!isDrop)}
           >
             <img
@@ -41,6 +41,10 @@ export default function Navbar({ children }) {
           </button>
           {isDrop && (
             <div className="h-fit min-w-64 bg-white absolute right-0 top-full mt-2 rounded shadow-lg overflow-hidden">
+              <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-b-gray-300 font-semibold">
+                {nama}
+                <span className="text-gray-300">@{username}</span>
+              </div>
               {children}
             </div>
           )}

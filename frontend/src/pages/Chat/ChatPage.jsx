@@ -6,14 +6,21 @@ import Chat from "../../components/ui/Chat/Chat";
 import ChatSend from "../../components/ui/Chat/ChatSend";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
 import { LogOut, Settings, User } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
 
+  const navigate = useNavigate();
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar>
+      <Navbar nama={user?.nama} username={user?.username}>
         <NavbarDropMenu>
           <User size={20} />
           Profile
@@ -22,7 +29,7 @@ export default function ChatPage() {
           <Settings size={20} />
           Setting
         </NavbarDropMenu>
-        <NavbarDropMenu variant={"danger"}>
+        <NavbarDropMenu variant={"danger"} onClick={() => handleLogout}>
           <LogOut size={20} />
           Logout
         </NavbarDropMenu>
