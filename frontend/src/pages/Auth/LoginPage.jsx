@@ -7,25 +7,25 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function LoginPage() {
   const [value, setValue] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const { setUser } = useOutletContext();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function handelLogin(event) {
     event.preventDefault();
 
     try {
       const response = await api.post("/auth/login", {
-        email: value.email,
+        username: value.username,
         password: value.password,
       });
 
       localStorage.setItem("token", response.data.token);
       setUser(response.data);
-      toast.success('Berhasil Login')
-      navigate('/chat')
+      toast.success("Berhasil Login");
+      navigate("/chat");
     } catch (error) {
       const pesan = error.response.data.message;
       toast.error(pesan);
@@ -36,14 +36,14 @@ export default function LoginPage() {
     <div className="bg-gray-300 h-screen flex justify-center items-center">
       <CardAuth type={"Login"} onSubmit={handelLogin}>
         <InputAuth
-          type={"email"}
-          placeholder={"Masukkan email anda..."}
-          value={value.email}
+          type={"text"}
+          placeholder={"Masukkan username anda..."}
+          value={value.username}
           required={true}
           onChange={(e) =>
             setValue({
               ...value,
-              email: e.target.value,
+              username: e.target.value,
             })
           }
         />

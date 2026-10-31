@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 // auth
 export const postLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await Users.findOne({ email });
+    const user = await Users.findOne({ username });
 
     if (!user)
-      return res.status(400).json({ message: "Email tidak ditemukan" });
+      return res.status(400).json({ message: "Username tidak ditemukan" });
 
     const cekPassword = await bcrypt.compare(password, user.password);
     if (!cekPassword)
@@ -20,6 +20,7 @@ export const postLogin = async (req, res) => {
     res.status(200).json({
       id: user._id,
       nama: user.nama,
+      username: user.username,
       email: user.email,
       token,
     });
@@ -30,13 +31,13 @@ export const postLogin = async (req, res) => {
 
 export const postRegister = async (req, res) => {
   try {
-    const { nama, email, password } = req.body;
+    const { nama, username, email, password } = req.body;
 
     const cekEmail = await Users.findOne({ email });
     if (cekEmail)
       return res.status(400).json({ message: "Email sudah terdaftar!" });
 
-    const userBaru = new Users({ nama, email, password });
+    const userBaru = new Users({ nama, username, email, password });
     await userBaru.save();
 
     res.status(201).json({ message: "Akun berhasil dibuat!" });

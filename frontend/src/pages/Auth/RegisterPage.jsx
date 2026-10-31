@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function RegisterPage() {
   const [value, setValue] = useState({
     nama: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -19,6 +20,7 @@ export default function RegisterPage() {
     try {
       const response = await api.post("/auth/register", {
         nama: value.nama,
+        username: value.username,
         email: value.email,
         password: value.password,
       });
@@ -40,6 +42,18 @@ export default function RegisterPage() {
             setValue({
               ...value,
               nama: e.target.value,
+            })
+          }
+        />
+        <InputAuth
+          type={"text"}
+          placeholder={"Masukkan username anda..."}
+          value={value.username}
+          required={true}
+          onChange={(e) =>
+            setValue({
+              ...value,
+              username: e.target.value,
             })
           }
         />
