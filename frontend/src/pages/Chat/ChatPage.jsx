@@ -12,6 +12,7 @@ export default function ChatPage() {
   const { user, setUser } = useOutletContext();
 
   const navigate = useNavigate();
+
   function handleLogout() {
     localStorage.removeItem("token");
     setUser(null);
@@ -20,7 +21,7 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar nama={user?.nama} username={user?.username}>
+      <Navbar nama={user.nama} username={user.username}>
         <NavbarDropMenu>
           <User size={20} />
           Profile
@@ -29,7 +30,7 @@ export default function ChatPage() {
           <Settings size={20} />
           Setting
         </NavbarDropMenu>
-        <NavbarDropMenu variant={"danger"} onClick={() => handleLogout}>
+        <NavbarDropMenu variant={"danger"} onClick={handleLogout}>
           <LogOut size={20} />
           Logout
         </NavbarDropMenu>

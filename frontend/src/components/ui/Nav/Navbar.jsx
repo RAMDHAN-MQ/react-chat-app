@@ -42,7 +42,7 @@ export default function Navbar({ children, nama, username }) {
           {isDrop && (
             <div className="h-fit min-w-64 bg-white absolute right-0 top-full mt-2 rounded shadow-lg overflow-hidden">
               <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-b-gray-300 font-semibold">
-                {nama}
+                <span className="line-clamp-1">{nama}</span>
                 <span className="text-gray-300">@{username}</span>
               </div>
               {children}
