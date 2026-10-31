@@ -4,11 +4,29 @@ import Navbar from "../../components/ui/Nav/Navbar";
 import InfoChatTop from "../../components/ui/Chat/ChatTop";
 import Chat from "../../components/ui/Chat/Chat";
 import ChatSend from "../../components/ui/Chat/ChatSend";
+import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
+import { LogOut, Settings, User } from "lucide-react";
+import { useOutletContext } from "react-router-dom";
 
 export default function ChatPage() {
+  const { user, setUser } = useOutletContext();
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navbar />
+      <Navbar>
+        <NavbarDropMenu>
+          <User size={20} />
+          Profile
+        </NavbarDropMenu>
+        <NavbarDropMenu>
+          <Settings size={20} />
+          Setting
+        </NavbarDropMenu>
+        <NavbarDropMenu variant={"danger"}>
+          <LogOut size={20} />
+          Logout
+        </NavbarDropMenu>
+      </Navbar>
       <div className="flex-1 flex min-h-0 w-full bg-gray-300 overflow-hidden">
         <div className="w-3/12 px-1 min-h-0">
           <div className="p-3 bg-white my-1 flex justify-center items-center min-h-[10vh] rounded">

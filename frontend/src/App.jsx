@@ -27,7 +27,7 @@ export default function App() {
   return (
     <>
       <Toaster />
-      <Outlet context={{ setUser, user }} />
+      <Outlet context={{ user, setUser }} />
     </>
   );
 }
