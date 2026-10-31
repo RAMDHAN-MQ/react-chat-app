@@ -1,6 +1,8 @@
 import Users from "../models/Users.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+// auth
 export const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -14,11 +16,12 @@ export const postLogin = async (req, res) => {
     if (!cekPassword)
       return res.status(400).json({ message: "Password salah" });
 
+    const token = generateToken(user._id);
     res.status(200).json({
       id: user._id,
       nama: user.nama,
       email: user.email,
-      password: user.password,
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
@@ -40,4 +43,14 @@ export const postRegister = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }
+};
+
+// chat
+export const getChat = async (req, res) => {
+  res.status(200).json(req.user);
+};
+
+// generate jwt token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
