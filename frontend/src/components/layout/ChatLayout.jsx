@@ -1,9 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 
 export default function ChatLayout() {
+  const { user } = useOutletContext();
+  console.log(user);
   return (
-    <div className="">
+    <>
       <Outlet />
-    </div>
+    </>
   );
 }
