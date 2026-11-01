@@ -2,6 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import api from "./api/axios";
+import toast from "react-hot-toast";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -11,7 +12,6 @@ export default function App() {
 
   useEffect(() => {
     async function fetchUser() {
-      console.log('loading...')
       const token = localStorage.getItem("token");
       if (token) {
         try {
@@ -21,7 +21,7 @@ export default function App() {
 
           setUser(res.data);
         } catch (error) {
-          console.error(error);
+          toast.error(error);
           localStorage.removeItem("token");
         }
       }

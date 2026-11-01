@@ -10,6 +10,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
+  console.log(user)
 
   const navigate = useNavigate();
 
@@ -35,6 +36,7 @@ export default function ChatPage() {
           Logout
         </NavbarDropMenu>
       </Navbar>
+
       <div className="flex-1 flex min-h-0 w-full bg-gray-300 overflow-hidden">
         <div className="w-3/12 px-1 min-h-0">
           <div className="p-3 bg-white my-1 flex justify-center items-center min-h-[10vh] rounded">
