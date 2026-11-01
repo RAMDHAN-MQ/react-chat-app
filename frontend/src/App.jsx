@@ -15,7 +15,7 @@ export default function App() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await api.get("auth/chat", {
+          const res = await api.get("/chats/", {
             headers: { Authorization: `Bearer ${token}` },
           });
 

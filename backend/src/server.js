@@ -1,9 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 import { connectDB } from "./config/db.js";
 
 // konfigurasi
@@ -20,6 +20,7 @@ connectDB();
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/chats", chatRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server berjalan di port ${PORT}`);
