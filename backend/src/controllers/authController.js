@@ -36,6 +36,10 @@ export const postRegister = async (req, res) => {
     if (cekEmail)
       return res.status(400).json({ message: "Email sudah terdaftar!" });
 
+    const cekUsername = await Users.findOne({ username });
+    if (cekUsername)
+      return res.status(400).json({ message: "Username sudah dipakai!" });
+
     const userBaru = new Users({ nama, username, email, password });
     await userBaru.save();
 
