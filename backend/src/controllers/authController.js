@@ -45,6 +45,10 @@ export const postRegister = async (req, res) => {
   }
 };
 
+export const getMe = async (req, res) => {
+  res.status(200).json(req.user);
+};
+
 // generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
