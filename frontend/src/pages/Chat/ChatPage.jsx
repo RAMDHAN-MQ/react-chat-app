@@ -10,7 +10,6 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
-  console.log(user)
 
   const navigate = useNavigate();
 
@@ -42,11 +41,7 @@ export default function ChatPage() {
           <div className="p-3 bg-white my-1 flex justify-center items-center min-h-[10vh] rounded">
             <Input placeholder={"Cari nama..."} className={"p-3"} />
           </div>
-          <div className="flex flex-col gap-1 h-full overflow-scroll">
-            <CardChat />
-            <CardChat />
-            <CardChat />
-            <CardChat />
+          <div className="flex flex-col gap-1 h-full overflow-auto">
             <CardChat />
             <CardChat />
             <CardChat />

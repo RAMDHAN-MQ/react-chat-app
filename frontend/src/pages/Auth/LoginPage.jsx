@@ -27,8 +27,7 @@ export default function LoginPage() {
       toast.success("Berhasil Login");
       navigate("/chat");
     } catch (error) {
-      const pesan = error.response.data.message;
-      toast.error(pesan);
+      toast.error(error.response.data.message);
     }
   }
 

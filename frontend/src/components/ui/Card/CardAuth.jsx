@@ -21,12 +21,9 @@ export default function CardAuth({ type, children, onSubmit }) {
       </div>
       <form onSubmit={(e) => onSubmit(e)}>
         {children}
-        <Button
-          text={type}
-          type={"submit"}
-          variant={"primary"}
-          width={"full"}
-        />
+        <Button type={"submit"} variant={"primary"} width={"full"}>
+          {type}
+        </Button>
       </form>
     </div>
   );

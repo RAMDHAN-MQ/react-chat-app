@@ -1,4 +1,12 @@
-export default function Button({ type, variant, text, width, to }) {
+export default function Button({
+  type,
+  variant,
+  children,
+  width,
+  to,
+  isIconOnly = false,
+  onClick,
+}) {
   let warna;
   switch (variant) {
     case "primary":
@@ -13,10 +21,10 @@ export default function Button({ type, variant, text, width, to }) {
     return (
       <a
         type={type}
-        className={`${warna} ${width === "full" && "w-full"} px-3 py-2 rounded-xl cursor-pointer hover:opacity-90 text-center`}
+        className={`${warna} ${width === "full" && "w-full"} ${isIconOnly ? "p-1" : "px-3 py-2"} rounded-xl cursor-pointer hover:opacity-90 text-center`}
         href={to}
       >
-        {text}
+        {children}
       </a>
     );
   }
@@ -24,9 +32,10 @@ export default function Button({ type, variant, text, width, to }) {
   return (
     <button
       type={type}
-      className={`${warna} ${width === "full" && "w-full"} px-3 py-2 rounded-xl cursor-pointer hover:opacity-90`}
+      onClick={onClick}
+      className={`${warna} ${width === "full" && "w-full"} ${isIconOnly ? "p-1" : "px-3 py-2"} rounded-xl cursor-pointer hover:opacity-90`}
     >
-      {text}
+      {children}
     </button>
   );
 }
