@@ -1,14 +1,12 @@
 import CardChat from "../../components/ui/Card/CardChat";
 import Input from "../../components/ui/Input/Input";
 import Navbar from "../../components/ui/Nav/Navbar";
-import InfoChatTop from "../../components/ui/Chat/ChatTop";
-import Chat from "../../components/ui/Chat/Chat";
-import ChatSend from "../../components/ui/Chat/ChatSend";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
 import { LogOut, Settings, User } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import api from "../../api/axios";
 import { useEffect, useState } from "react";
+import ChatRoom from "../../components/ui/Chat/ChatRoom";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
@@ -70,11 +68,7 @@ export default function ChatPage() {
         </div>
 
         <div className="w-9/12 pt-1 pr-1 min-h-0">
-          <div className="h-full flex flex-col justify-between">
-            <InfoChatTop />
-            <Chat />
-            <ChatSend />
-          </div>
+          <ChatRoom />
         </div>
       </div>
     </div>

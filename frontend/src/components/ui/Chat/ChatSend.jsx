@@ -1,6 +1,8 @@
 import { SendHorizontal } from "lucide-react";
 import Input from "../Input/Input";
 
+
+
 export default function ChatSend() {
   return (
     <div className="bg-gray-300 min-h-[10vh] px-2 py-4 flex items-center">

@@ -7,6 +7,7 @@ import RegisterPage from "./pages/Auth/RegisterPage.jsx";
 import ChatPage from "./pages/Chat/ChatPage.jsx";
 import App from "./App.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import ChatRoom from "./components/ui/Chat/ChatRoom.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
 
-          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/chat" element={<ChatPage />}>
+            <Route path=":conversationID" element={ChatRoom} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Route>

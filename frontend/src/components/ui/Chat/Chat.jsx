@@ -1,6 +1,6 @@
 import ChatBubble from "./ChatBubble";
 
-export default function Chat() {
+export default function Chat({ message }) {
   return (
     <div className="flex-1 overflow-x-hidden overflow-y-scroll bg-white p-3 rounded">
       <ChatBubble saya={true} chat={"halo"} waktu={"12:11"} />
