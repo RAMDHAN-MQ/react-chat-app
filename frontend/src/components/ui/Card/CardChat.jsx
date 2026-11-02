@@ -10,12 +10,12 @@ export default function CardChat({ img, nama, pesan, jam, jumlahPesan }) {
           />
         </button>
 
-        <div className="flex flex-col justify-between h-full">
-          <p className="text-black">Nama</p>
-          <p className="text-gray-500">Pesan</p>
+        <div className="flex flex-col gap-1">
+          <p className="text-black">{nama}</p>
+          <p className="text-gray-500">{pesan}</p>
         </div>
       </div>
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex flex-col gap-1 items-end">
         <p className="text-xs">2/12/2026</p>
         <div className="flex justify-end">
           <span className="bg-blue-500 text-white text-xs flex justify-center items-center rounded-full size-6">

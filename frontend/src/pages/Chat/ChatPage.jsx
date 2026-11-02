@@ -7,9 +7,12 @@ import ChatSend from "../../components/ui/Chat/ChatSend";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
 import { LogOut, Settings, User } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import api from "../../api/axios";
+import { useEffect, useState } from "react";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
+  const [conversation, setConversation] = useState([]);
 
   const navigate = useNavigate();
 
@@ -18,6 +21,19 @@ export default function ChatPage() {
     setUser(null);
     navigate("/");
   }
+
+  useEffect(() => {
+    async function getConversation() {
+      try {
+        const response = await api.get("/conversation/");
+        setConversation(response.data);
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
+    }
+
+    getConversation();
+  }, []);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -42,13 +58,14 @@ export default function ChatPage() {
             <Input placeholder={"Cari nama..."} className={"p-3"} />
           </div>
           <div className="flex flex-col gap-1 h-full overflow-auto">
-            <CardChat />
-            <CardChat />
-            <CardChat />
-            <CardChat />
-            <CardChat />
-            <CardChat />
-            <CardChat />
+            {conversation
+              .filter((f) => f.lastChat !== null)
+              .map((e) => {
+                const other = e.participants.find((e) => e._id !== user._id);
+                return (
+                  <CardChat key={e._id} nama={other.nama} pesan={e.lastChat} />
+                );
+              })}
           </div>
         </div>
 

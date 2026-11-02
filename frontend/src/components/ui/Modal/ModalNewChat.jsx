@@ -27,9 +27,10 @@ export default function ModalNewChat({ setIsNewChat, userLogin }) {
 
   async function handleCreateConversation(userParticipant) {
     try {
-      await api.post("/conversation/", {
+      const response = await api.post("/conversation/", {
         participant: userParticipant,
       });
+      console.log(response.data);
     } catch (error) {
       toast.error(error.response.data.message);
     }

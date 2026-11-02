@@ -1,5 +1,6 @@
 import Conversation from "../models/Conversations.js";
 import Users from "../models/Users.js";
+import Chats from "../models/Chats.js";
 
 export const postCreateConversation = async (req, res) => {
   try {
@@ -20,6 +21,23 @@ export const postCreateConversation = async (req, res) => {
     }
 
     return res.status(200).json({ message: "Berhasil buat conversations" });
+  } catch (error) {
+    res.status(500).json({ message: `Terjadi Error: ${error}` });
+  }
+};
+
+export const getConversations = async (req, res) => {
+  try {
+    const userLoginID = req.user._id;
+
+    const conversations = await Conversation.find({
+      participants: userLoginID,
+    })
+      .populate("participants", "nama username")
+      .populate("lastChat")
+      .sort({ updatedAt: -1 });
+
+    return res.status(200).json(conversations);
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }
