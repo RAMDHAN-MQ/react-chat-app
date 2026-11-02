@@ -25,6 +25,16 @@ export default function ModalNewChat({ setIsNewChat, userLogin }) {
     }
   }
 
+  async function handleCreateConversation(userParticipant) {
+    try {
+      await api.post("/conversation/", {
+        participant: userParticipant,
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+
   return (
     <div className="fixed left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.4)] flex justify-center items-center">
       <div className="bg-white min-w-[50%] rounded-xl overflow-hidden">
@@ -61,7 +71,7 @@ export default function ModalNewChat({ setIsNewChat, userLogin }) {
               <div
                 key={e._id}
                 className="p-5 border-t-2 border-t-gray-300 hover:bg-blue-100 cursor-pointer"
-                onClick={() => console.log("asdlja")}
+                onClick={() => handleCreateConversation(e._id)}
               >
                 <div className="flex items-center gap-2">
                   <button className="flex items-center rounded-full overflow-hidden ring ring-blue-500 ring-offset-1">

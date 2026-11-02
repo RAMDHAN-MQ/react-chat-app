@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
 import { connectDB } from "./config/db.js";
 
 // konfigurasi
@@ -21,6 +22,7 @@ connectDB();
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/conversation", conversationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server berjalan di port ${PORT}`);
