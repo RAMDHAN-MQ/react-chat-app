@@ -60,10 +60,15 @@ export default function ChatPage() {
               .filter((f) => f.lastChat !== null)
               .map((e) => {
                 const other = e.participants.find(
-                  (e) => String(e._id) !== String(user._id),
+                  (cari) => String(cari._id) !== String(user._id),
                 );
                 return (
-                  <CardChat key={e._id} nama={other.nama} pesan={e.lastChat.text} />
+                  <CardChat
+                    key={e._id}
+                    nama={other.nama}
+                    pesan={e.lastChat.text}
+                    onClick={() => navigate(`/chat/${e._id}`)}
+                  />
                 );
               })}
           </div>

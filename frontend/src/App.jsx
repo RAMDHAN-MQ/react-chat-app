@@ -15,10 +15,7 @@ export default function App() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await api.get("/auth/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
+          const res = await api.get("/auth/me");
           setUser(res.data);
         } catch (error) {
           toast.error(error);

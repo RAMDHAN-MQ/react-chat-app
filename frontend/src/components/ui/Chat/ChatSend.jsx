@@ -11,12 +11,11 @@ export default function ChatSend({ conversationID }) {
     event.preventDefault();
 
     try {
-      const response = await api.post("/conversation/send", {
+      await api.post("/conversation/send", {
         conversationId: conversationID,
         text: message,
       });
 
-      console.log(response);
       setMessage("");
     } catch (error) {
       toast.error(error.response.data.message);

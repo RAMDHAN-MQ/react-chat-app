@@ -20,7 +20,7 @@ export const postCreateConversation = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ message: "Berhasil buat conversations" });
+    return res.status(200).json(conversation._id);
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }

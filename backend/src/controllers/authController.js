@@ -17,7 +17,7 @@ export const postLogin = async (req, res) => {
 
     const token = generateToken(user._id);
     res.status(200).json({
-      id: user._id,
+      _id: user._id,
       nama: user.nama,
       username: user.username,
       email: user.email,

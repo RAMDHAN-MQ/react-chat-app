@@ -1,6 +1,16 @@
-export default function CardChat({ img, nama, pesan, jam, jumlahPesan }) {
+export default function CardChat({
+  img,
+  nama,
+  pesan,
+  jam,
+  jumlahPesan,
+  onClick,
+}) {
   return (
-    <div className="flex items-center justify-between w-full p-3 bg-white hover:bg-gray-100 rounded">
+    <div
+      className="flex items-center justify-between w-full p-3 bg-white hover:bg-gray-100 rounded"
+      onClick={onClick}
+    >
       <div className="flex items-center gap-4">
         <button className="flex items-center rounded-full overflow-hidden">
           <img

@@ -4,10 +4,12 @@ import Button from "../Button/Button";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import api from "../../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalNewChat({ setIsNewChat, userLogin }) {
   const [value, setValue] = useState("");
   const [list, setList] = useState([]);
+  const navigate = useNavigate();
 
   async function handleCariUsername(e) {
     e.preventDefault();
@@ -26,11 +28,13 @@ export default function ModalNewChat({ setIsNewChat, userLogin }) {
   }
 
   async function handleCreateConversation(userParticipant) {
+    setIsNewChat(false)
     try {
       const response = await api.post("/conversation/", {
         participant: userParticipant,
       });
-      console.log(response.data);
+
+      navigate(`/chat/${response.data}`);
     } catch (error) {
       toast.error(error.response.data.message);
     }

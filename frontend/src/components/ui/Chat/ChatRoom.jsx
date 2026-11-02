@@ -5,6 +5,7 @@ import ChatTop from "./ChatTop";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../api/axios";
+import { MessageSquarePlus } from "lucide-react";
 
 export default function ChatRoom() {
   const [otherUser, setOtherUser] = useState({
@@ -25,7 +26,7 @@ export default function ChatRoom() {
         });
         setMessage(response.data.message);
       } catch (error) {
-        console.log(error.response.data.message);
+        console.error(error.response.data.message);
       }
     }
 
@@ -34,9 +35,20 @@ export default function ChatRoom() {
 
   return (
     <div className="h-full flex flex-col justify-between">
-      <ChatTop nama={otherUser.nama} username={otherUser.username} />
-      <Chat message={message} />
-      <ChatSend conversationID={conversationID} />
+      {conversationID === undefined ? (
+        <div className="p-3 bg-blue-500 flex flex-col justify-center gap-4 items-center h-full mb-1 rounded">
+          <p className="text-6xl font-bold text-white">Selamat Datang!</p>
+          <p className="text-xl flex gap-2 text-white">
+            Mulai chat dengan <MessageSquarePlus /> di atas!
+          </p>
+        </div>
+      ) : (
+        <>
+          <ChatTop nama={otherUser.nama} username={otherUser.username} />
+          <Chat message={message} />
+          <ChatSend conversationID={conversationID} />
+        </>
+      )}
     </div>
   );
 }
