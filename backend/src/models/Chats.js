@@ -7,14 +7,10 @@ const chatSchema = new mongoose.Schema(
       ref: "conversations",
       required: true,
     },
-    from: {
+    sender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       required: true,
-    },
-    to: {
-      type: String,
-      ref: "users",
     },
     text: {
       type: String,

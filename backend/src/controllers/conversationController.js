@@ -54,16 +54,42 @@ export const getChat = async (req, res) => {
     const otherUser = cekConversationID.participants.find(
       (e) => String(e._id) !== String(req.user._id),
     );
-    console.log(otherUser);
 
     if (!cekConversationID)
       return res.status(400).json({ message: "Conversation tidak ditemukan!" });
 
     const chats = await Chats.find({ conversation: conversationID })
-      .populate("from", "nama username")
+      .populate("sender", "nama username")
       .sort({ createdAt: 1 });
 
-    res.status(200).json({ participant: otherUser, chats: chats });
+    res.status(200).json({ participant: otherUser, message: chats });
+  } catch (error) {
+    res.status(500).json({ message: `Terjadi Error: ${error}` });
+  }
+};
+
+export const postSendChat = async (req, res) => {
+  try {
+    const { conversationId, text } = req.body;
+
+    const conversation = await Conversation.findOne({
+      _id: conversationId,
+      participants: req.user._id,
+    });
+
+    if (!conversation)
+      return res.status(400).json({ message: "Obrolan tidak ditemukan!" });
+
+    const chat = await Chats.create({
+      conversation: conversationId,
+      sender: req.user._id,
+      text,
+    });
+
+    conversation.lastChat = chat._id;
+    await conversation.save();
+
+    return res.status(200).json(chat);
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }

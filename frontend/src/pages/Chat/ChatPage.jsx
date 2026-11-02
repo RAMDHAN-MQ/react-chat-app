@@ -59,9 +59,11 @@ export default function ChatPage() {
             {conversation
               .filter((f) => f.lastChat !== null)
               .map((e) => {
-                const other = e.participants.find((e) => e._id !== user._id);
+                const other = e.participants.find(
+                  (e) => String(e._id) !== String(user._id),
+                );
                 return (
-                  <CardChat key={e._id} nama={other.nama} pesan={e.lastChat} />
+                  <CardChat key={e._id} nama={other.nama} pesan={e.lastChat.text} />
                 );
               })}
           </div>

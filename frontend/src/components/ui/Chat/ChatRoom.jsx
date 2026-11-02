@@ -25,7 +25,7 @@ export default function ChatRoom() {
         });
         setMessage(response.data.message);
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
       }
     }
 
@@ -36,7 +36,7 @@ export default function ChatRoom() {
     <div className="h-full flex flex-col justify-between">
       <ChatTop nama={otherUser.nama} username={otherUser.username} />
       <Chat message={message} />
-      <ChatSend />
+      <ChatSend conversationID={conversationID} />
     </div>
   );
 }
