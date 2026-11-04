@@ -51,12 +51,12 @@ export const getChat = async (req, res) => {
       _id: conversationID,
     }).populate("participants", "nama username");
 
+    if (!cekConversationID)
+      return res.status(400).json({ message: "Conversation tidak ditemukan!" });
+
     const otherUser = cekConversationID.participants.find(
       (e) => String(e._id) !== String(req.user._id),
     );
-
-    if (!cekConversationID)
-      return res.status(400).json({ message: "Conversation tidak ditemukan!" });
 
     const chats = await Chats.find({ conversation: conversationID })
       .populate("sender", "nama username")
@@ -88,6 +88,16 @@ export const postSendChat = async (req, res) => {
 
     conversation.lastChat = chat._id;
     await conversation.save();
+
+    // socket
+    const chatSocket = await Chats.findById(chat._id).populate(
+      "sender",
+      "nama username",
+    );
+
+    const io = req.app.get("io");
+
+    io.to(String(conversationId)).emit("newMessage", chatSocket);
 
     return res.status(200).json(chat);
   } catch (error) {

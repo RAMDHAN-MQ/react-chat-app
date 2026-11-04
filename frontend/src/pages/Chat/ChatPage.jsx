@@ -7,6 +7,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import api from "../../api/axios";
 import { useEffect, useState } from "react";
 import ChatRoom from "../../components/ui/Chat/ChatRoom";
+import socket from "../../socket/socket";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
@@ -31,6 +32,63 @@ export default function ChatPage() {
     }
 
     getConversation();
+  }, []);
+
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    function joinRooms() {
+      conversation.forEach((e) => {
+        socket.emit("joinConversation", e._id);
+      });
+    }
+
+    socket.on("connect", joinRooms);
+
+    if (socket.connected) {
+      joinRooms();
+    }
+
+    return () => {
+      socket.off("connect", joinRooms);
+    };
+  }, [conversation]);
+
+  useEffect(() => {
+    function handleNewMessage(newMessage) {
+      setConversation((prev) => {
+        const conversationIndex = prev.findIndex(
+          (e) => String(e._id) === String(newMessage.conversation),
+        );
+
+        if (conversationIndex === -1) {
+          return prev;
+        }
+
+        const updatedConversation = {
+          ...prev[conversationIndex],
+          lastChat: newMessage,
+        };
+
+        const updatedList = prev.filter(
+          (e) => String(e._id) !== String(newMessage.conversation),
+        );
+
+        return [updatedConversation, ...updatedList];
+      });
+    }
+
+    socket.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
   }, []);
 
   return (

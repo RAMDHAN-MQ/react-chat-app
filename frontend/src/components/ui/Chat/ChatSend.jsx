@@ -9,16 +9,18 @@ export default function ChatSend({ conversationID }) {
 
   async function handleSendChat(event) {
     event.preventDefault();
+    const text = message.trim();
+    if (!text) return;
 
     try {
       await api.post("/conversation/send", {
         conversationId: conversationID,
-        text: message,
+        text,
       });
 
       setMessage("");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Gagal mengirim pesan!");
     }
   }
 

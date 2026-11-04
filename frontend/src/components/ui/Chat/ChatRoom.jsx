@@ -1,11 +1,11 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Chat from "./Chat";
 import ChatSend from "./ChatSend";
 import ChatTop from "./ChatTop";
-import { useState } from "react";
-import { useEffect } from "react";
 import api from "../../../api/axios";
 import { MessageSquarePlus } from "lucide-react";
+import socket from "../../../socket/socket.js";
 
 export default function ChatRoom() {
   const [otherUser, setOtherUser] = useState({
@@ -17,6 +17,8 @@ export default function ChatRoom() {
   const { conversationID } = useParams();
 
   useEffect(() => {
+    if (!conversationID) return;
+
     async function handleChatRoom() {
       try {
         const response = await api.get(`/conversation/${conversationID}`);
@@ -31,6 +33,30 @@ export default function ChatRoom() {
     }
 
     handleChatRoom();
+  }, [conversationID]);
+
+  useEffect(() => {
+    if (!conversationID) return;
+
+    function handleNewMessage(newMessage) {
+      if (String(newMessage.conversation) !== String(conversationID)) {
+        return;
+      }
+
+      setMessage((prev) => {
+        if (prev.some((msg) => msg._id === newMessage._id)) {
+          return prev;
+        }
+
+        return [...prev, newMessage];
+      });
+    }
+
+    socket.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
   }, [conversationID]);
 
   return (
