@@ -39,10 +39,6 @@ export default function Navbar({ children, nama, username }) {
             <MessageSquarePlus />
           </Button>
 
-          <Button variant={"primary"} isIconOnly={true}>
-            <Bell />
-          </Button>
-
           <div className="relative" ref={dropdownRef}>
             <button
               className=" flex items-center gap-2 rounded-full overflow-hidden ring ring-white ring-offset-1 cursor-pointer"

@@ -1,10 +1,24 @@
 import { useOutletContext } from "react-router-dom";
 import ChatBubble from "./ChatBubble";
+import { useEffect, useRef } from "react";
 
 export default function Chat({ message }) {
   const { user } = useOutletContext();
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const element = containerRef.current;
+
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  }, [message]);
+
   return (
-    <div className="flex-1 overflow-x-hidden overflow-y-scroll bg-white p-3 rounded">
+    <div
+      ref={containerRef}
+      className="flex-1 flex-col overflow-x-hidden overflow-y-scroll bg-white p-3 rounded direction scrollbar-thin"
+    >
       {message.map((e, i) => {
         const sender = user._id === e.sender._id;
         const tanggal = new Date(e.createdAt);
