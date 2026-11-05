@@ -37,7 +37,19 @@ export const getConversations = async (req, res) => {
       .populate("lastChat")
       .sort({ updatedAt: -1 });
 
-    return res.status(200).json(conversations);
+    const result = await Promise.all(
+      conversations.map(async (conversation) => {
+        const unreadCount = await Chats.countDocuments({
+          conversation: conversation._id,
+          sender: { $ne: userLoginID },
+          readBy: { $ne: userLoginID },
+        });
+
+        return { ...conversation.toObject(), unreadCount };
+      }),
+    );
+
+    return res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: `Terjadi Error: ${error}` });
   }
@@ -46,9 +58,11 @@ export const getConversations = async (req, res) => {
 export const getChat = async (req, res) => {
   try {
     const conversationID = req.params.conversationID;
+    const userLoginID = req.user._id;
 
     const cekConversationID = await Conversation.findOne({
       _id: conversationID,
+      participants: userLoginID,
     }).populate("participants", "nama username");
 
     if (!cekConversationID)
@@ -57,6 +71,24 @@ export const getChat = async (req, res) => {
     const otherUser = cekConversationID.participants.find(
       (e) => String(e._id) !== String(req.user._id),
     );
+
+    const updateReadBy = await Chats.updateMany(
+      {
+        conversation: conversationID,
+        sender: { $ne: userLoginID },
+        readBy: { $ne: userLoginID },
+      },
+      { $addToSet: { readBy: userLoginID } },
+    );
+
+    if (updateReadBy.modifiedCount > 0) {
+      const io = req.app.get("io");
+
+      io.to(String(conversationID)).emit("messagesRead", {
+        conversationID: String(conversationID),
+        readerId: String(userLoginID),
+      });
+    }
 
     const chats = await Chats.find({ conversation: conversationID })
       .populate("sender", "nama username")

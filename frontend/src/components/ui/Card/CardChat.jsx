@@ -1,11 +1,4 @@
-export default function CardChat({
-  img,
-  nama,
-  pesan,
-  jam,
-  jumlahPesan,
-  onClick,
-}) {
+export default function CardChat({ img, nama, pesan, jumlahPesan, onClick }) {
   return (
     <div
       className="flex items-center justify-between w-full p-3 bg-white hover:bg-gray-100 rounded"
@@ -26,11 +19,12 @@ export default function CardChat({
         </div>
       </div>
       <div className="flex flex-col gap-1 items-end">
-        <p className="text-xs">2/12/2026</p>
         <div className="flex justify-end">
-          <span className="bg-blue-500 text-white text-xs flex justify-center items-center rounded-full size-6">
-            1
-          </span>
+          {jumlahPesan > 0 && (
+            <span className="bg-blue-500 text-white text-xs flex justify-center items-center rounded-full size-6">
+              {jumlahPesan}
+            </span>
+          )}
         </div>
       </div>
     </div>

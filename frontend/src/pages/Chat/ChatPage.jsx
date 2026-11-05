@@ -91,6 +91,28 @@ export default function ChatPage() {
     };
   }, []);
 
+  useEffect(() => {
+    function handleMessagesRead(data) {
+      if (String(data.readerId) !== String(user._id)) {
+        return;
+      }
+
+      setConversation((prev) =>
+        prev.map((item) =>
+          String(item._id) === String(data.conversationId)
+            ? { ...item, unreadCount: 0 }
+            : item,
+        ),
+      );
+    }
+
+    socket.on("messagesRead", handleMessagesRead);
+
+    return () => {
+      socket.off("messagesRead", handleMessagesRead);
+    };
+  }, [user._id]);
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Navbar nama={user.nama} username={user.username}>
@@ -120,11 +142,15 @@ export default function ChatPage() {
                 const other = e.participants.find(
                   (cari) => String(cari._id) !== String(user._id),
                 );
+
+                console.log(e);
+
                 return (
                   <CardChat
                     key={e._id}
                     nama={other.nama}
                     pesan={e.lastChat.text}
+                    jumlahPesan={e.unreadCount}
                     onClick={() => navigate(`/chat/${e._id}`)}
                   />
                 );

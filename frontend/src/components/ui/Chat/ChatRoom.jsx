@@ -59,6 +59,33 @@ export default function ChatRoom() {
     };
   }, [conversationID]);
 
+  useEffect(() => {
+    function handleMessageRead(data) {
+      if (String(data.conversationId) !== String(conversationID)) {
+        return;
+      }
+
+      setMessage((prev) =>
+        prev.map((e) => {
+          if (String(e.sender?._id ?? e.sender) !== String(data.readerId)) {
+            return {
+              ...e,
+              readBy: [...(e.readBy || []), data.readerId],
+            };
+          }
+
+          return e;
+        }),
+      );
+    }
+
+    socket.on("messageRead", handleMessageRead);
+
+    return () => {
+      socket.off("messageRead", handleMessageRead);
+    };
+  }, [conversationID]);
+
   return (
     <div className="h-full flex flex-col justify-between">
       {conversationID === undefined ? (
