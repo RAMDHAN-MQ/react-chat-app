@@ -101,7 +101,7 @@ export default function ChatPage() {
     return () => {
       socket.off("newMessage", handleNewMessage);
     };
-  }, [conversationID]);
+  }, [conversationID, user._id]);
 
   useEffect(() => {
     function handleMessagesRead(data) {
