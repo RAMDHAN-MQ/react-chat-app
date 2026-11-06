@@ -7,7 +7,7 @@ import api from "../../../api/axios";
 import { MessageSquarePlus } from "lucide-react";
 import socket from "../../../socket/socket.js";
 
-export default function ChatRoom() {
+export default function ChatRoom({ onConversationRead }) {
   const [otherUser, setOtherUser] = useState({
     nama: "",
     username: "",
@@ -19,21 +19,33 @@ export default function ChatRoom() {
   useEffect(() => {
     if (!conversationID) return;
 
+    let isMounted = true;
+
     async function handleChatRoom() {
       try {
         const response = await api.get(`/conversation/${conversationID}`);
+
+        if (!isMounted) return;
+
         setOtherUser({
           nama: response.data.participant.nama,
           username: response.data.participant.username,
         });
+
         setMessage(response.data.message);
+
+        onConversationRead(conversationID);
       } catch (error) {
-        console.error(error.response.data.message);
+        console.error(error.response?.data?.message);
       }
     }
 
     handleChatRoom();
-  }, [conversationID]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [conversationID, onConversationRead]);
 
   useEffect(() => {
     if (!conversationID) return;
@@ -67,22 +79,27 @@ export default function ChatRoom() {
 
       setMessage((prev) =>
         prev.map((e) => {
-          if (String(e.sender?._id ?? e.sender) !== String(data.readerId)) {
-            return {
-              ...e,
-              readBy: [...(e.readBy || []), data.readerId],
-            };
+          if (String(e.sender?._id ?? e.sender) === String(data.readerId)) {
+            return e;
           }
 
-          return e;
+          return {
+            ...e,
+            readBy: [
+              ...(e.readBy || []).filter(
+                (id) => String(id?._id ?? id) !== String(data.readerId),
+              ),
+              data.readerId,
+            ],
+          };
         }),
       );
     }
 
-    socket.on("messageRead", handleMessageRead);
+    socket.on("messagesRead", handleMessageRead);
 
     return () => {
-      socket.off("messageRead", handleMessageRead);
+      socket.off("messagesRead", handleMessageRead);
     };
   }, [conversationID]);
 

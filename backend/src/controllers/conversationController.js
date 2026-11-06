@@ -57,6 +57,7 @@ export const getConversations = async (req, res) => {
 
 export const getChat = async (req, res) => {
   try {
+    console.log("GET CHAT DIPANGGIL");
     const conversationID = req.params.conversationID;
     const userLoginID = req.user._id;
 
@@ -72,6 +73,21 @@ export const getChat = async (req, res) => {
       (e) => String(e._id) !== String(req.user._id),
     );
 
+    const unreadMessages = await Chats.find({
+      conversation: conversationID,
+      sender: { $ne: userLoginID },
+      readBy: { $ne: userLoginID },
+    });
+
+    console.log(
+      "Pesan belum dibaca:",
+      unreadMessages.map((chat) => ({
+        id: chat._id,
+        sender: chat.sender,
+        readBy: chat.readBy,
+      })),
+    );
+
     const updateReadBy = await Chats.updateMany(
       {
         conversation: conversationID,
@@ -81,11 +97,23 @@ export const getChat = async (req, res) => {
       { $addToSet: { readBy: userLoginID } },
     );
 
+    const checkMessages = await Chats.find({
+      conversation: conversationID,
+    }).select("sender readBy text");
+
+    console.log(
+      "Kondisi readBy setelah update:",
+      checkMessages.map((chat) => ({
+        sender: chat.sender,
+        readBy: chat.readBy,
+      })),
+    );
+
     if (updateReadBy.modifiedCount > 0) {
       const io = req.app.get("io");
 
       io.to(String(conversationID)).emit("messagesRead", {
-        conversationID: String(conversationID),
+        conversationId: String(conversationID),
         readerId: String(userLoginID),
       });
     }

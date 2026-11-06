@@ -3,15 +3,16 @@ import Input from "../../components/ui/Input/Input";
 import Navbar from "../../components/ui/Nav/Navbar";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
 import { LogOut, Settings, User } from "lucide-react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import api from "../../api/axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ChatRoom from "../../components/ui/Chat/ChatRoom";
 import socket from "../../socket/socket";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
   const [conversation, setConversation] = useState([]);
+  const { conversationID } = useParams();
 
   const navigate = useNavigate();
 
@@ -71,9 +72,20 @@ export default function ChatPage() {
           return prev;
         }
 
+        const currentConversation = prev[conversationIndex];
+
+        const isSender = String(newMessage.sender._id) === String(user._id);
+
+        const isActiveConversation =
+          String(newMessage.conversation) === String(conversationID);
+
         const updatedConversation = {
-          ...prev[conversationIndex],
+          ...currentConversation,
           lastChat: newMessage,
+          unreadCount:
+            isSender || isActiveConversation
+              ? currentConversation.unreadCount
+              : currentConversation.unreadCount + 1,
         };
 
         const updatedList = prev.filter(
@@ -89,7 +101,7 @@ export default function ChatPage() {
     return () => {
       socket.off("newMessage", handleNewMessage);
     };
-  }, []);
+  }, [conversationID]);
 
   useEffect(() => {
     function handleMessagesRead(data) {
@@ -112,6 +124,28 @@ export default function ChatPage() {
       socket.off("messagesRead", handleMessagesRead);
     };
   }, [user._id]);
+
+  function handleOpenConversation(conversationId) {
+    setConversation((prev) =>
+      prev.map((item) =>
+        String(item._id) === String(conversationId)
+          ? { ...item, unreadCount: 0 }
+          : item,
+      ),
+    );
+
+    navigate(`/chat/${conversationId}`);
+  }
+
+  const handleConversationRead = useCallback((conversationId) => {
+    setConversation((prev) =>
+      prev.map((item) =>
+        String(item._id) === String(conversationId)
+          ? { ...item, unreadCount: 0 }
+          : item,
+      ),
+    );
+  }, []);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -143,15 +177,13 @@ export default function ChatPage() {
                   (cari) => String(cari._id) !== String(user._id),
                 );
 
-                console.log(e);
-
                 return (
                   <CardChat
                     key={e._id}
                     nama={other.nama}
                     pesan={e.lastChat.text}
                     jumlahPesan={e.unreadCount}
-                    onClick={() => navigate(`/chat/${e._id}`)}
+                    onClick={() => handleOpenConversation(e._id)}
                   />
                 );
               })}
@@ -159,7 +191,7 @@ export default function ChatPage() {
         </div>
 
         <div className="w-9/12 pt-1 pr-1 min-h-0">
-          <ChatRoom />
+          <ChatRoom onConversationRead={handleConversationRead} />
         </div>
       </div>
     </div>
