@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function ChatTop({ nama, username }) {
   const navigate = useNavigate();
   return (
-    <div className="p-3 bg-white flex justify-between items-center min-h-[10vh] mb-1 rounded">
+    <div className="p-3 bg-white flex justify-between items-center h-20 mb-1 rounded">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-4">
           <button className="flex items-center rounded-full overflow-hidden ring ring-blue-500 ring-offset-1">

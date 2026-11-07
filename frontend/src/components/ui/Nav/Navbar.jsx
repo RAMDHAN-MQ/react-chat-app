@@ -1,4 +1,4 @@
-import { Bell, MessageSquarePlus } from "lucide-react";
+import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button/Button";
 import ModalNewChat from "../Modal/ModalNewChat";

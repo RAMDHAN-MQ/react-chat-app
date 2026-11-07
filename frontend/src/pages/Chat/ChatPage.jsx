@@ -3,7 +3,12 @@ import Input from "../../components/ui/Input/Input";
 import Navbar from "../../components/ui/Nav/Navbar";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
 import { LogOut, Settings, User } from "lucide-react";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import api from "../../api/axios";
 import { useCallback, useEffect, useState } from "react";
 import ChatRoom from "../../components/ui/Chat/ChatRoom";
@@ -13,7 +18,8 @@ export default function ChatPage() {
   const { user, setUser } = useOutletContext();
   const [conversation, setConversation] = useState([]);
   const { conversationID } = useParams();
-
+  const location = useLocation();
+  const isOpenChat = location.pathname !== "/chat";
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -165,9 +171,11 @@ export default function ChatPage() {
       </Navbar>
 
       <div className="flex-1 flex min-h-0 w-full bg-gray-300 overflow-hidden">
-        <div className="w-3/12 px-1 min-h-0">
-          <div className="p-3 bg-white my-1 flex justify-center items-center min-h-[10vh] rounded">
-            <Input placeholder={"Cari nama..."} className={"p-3"} />
+        <div
+          className={`${isOpenChat ? "hidden" : "w-full"} lg:block lg:w-3/12 px-1 min-h-0`}
+        >
+          <div className="p-3 bg-white my-1 flex justify-center items-center h-20 rounded">
+            <Input placeholder={"Cari nama..."} className={"rounded-xl p-3"} />
           </div>
           <div className="flex flex-col gap-1 h-full overflow-auto">
             {conversation
@@ -190,7 +198,9 @@ export default function ChatPage() {
           </div>
         </div>
 
-        <div className="w-9/12 pt-1 pr-1 min-h-0">
+        <div
+          className={`${isOpenChat ? "w-full" : "hidden"} lg:block lg:w-9/12 p-1 lg:pl-0 lg:pb-0 min-h-0`}
+        >
           <ChatRoom onConversationRead={handleConversationRead} />
         </div>
       </div>

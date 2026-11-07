@@ -27,12 +27,12 @@ export default function ChatSend({ conversationID }) {
   return (
     <form
       onSubmit={(e) => handleSendChat(e)}
-      className="bg-gray-300 min-h-[10vh] px-2 py-4 flex items-center"
+      className="bg-gray-300 min-h-[10vh] py-4 flex items-center"
     >
       <div className="w-full h-full">
         <Input
           placeholder={"Ketikan sesuatu..."}
-          className={"px-3"}
+          className={"rounded px-3"}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required={true}

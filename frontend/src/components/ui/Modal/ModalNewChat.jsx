@@ -28,21 +28,22 @@ export default function ModalNewChat({ setIsNewChat, userLogin }) {
   }
 
   async function handleCreateConversation(userParticipant) {
-    setIsNewChat(false)
+    setIsNewChat(false);
     try {
       const response = await api.post("/conversation/", {
         participant: userParticipant,
       });
 
       navigate(`/chat/${response.data}`);
+      location.reload()
     } catch (error) {
       toast.error(error.response.data.message);
     }
   }
 
   return (
-    <div className="fixed left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.4)] flex justify-center items-center">
-      <div className="bg-white min-w-[50%] rounded-xl overflow-hidden">
+    <div className="fixed left-0 top-0 z-10 p-1 w-full h-full bg-[rgba(0,0,0,0.4)] flex justify-center items-center">
+      <div className="bg-white w-full lg:w-[50%] rounded-xl overflow-hidden">
         <div className="flex justify-between items-center bg-blue-500 p-5 text-white">
           <span className="text-xl">Pesan Baru</span>
           <Button

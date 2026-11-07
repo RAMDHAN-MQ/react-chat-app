@@ -7,7 +7,8 @@ import api from "../../../api/axios";
 import { MessageSquarePlus } from "lucide-react";
 import socket from "../../../socket/socket.js";
 
-export default function ChatRoom({ onConversationRead }) {
+export default function 
+ChatRoom({ onConversationRead }) {
   const [otherUser, setOtherUser] = useState({
     nama: "",
     username: "",
