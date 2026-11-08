@@ -10,13 +10,15 @@ import {
   useParams,
 } from "react-router-dom";
 import api from "../../api/axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ChatRoom from "../../components/ui/Chat/ChatRoom";
 import socket from "../../socket/socket";
 
 export default function ChatPage() {
   const { user, setUser } = useOutletContext();
   const [conversation, setConversation] = useState([]);
+  const [search, setSearch] = useState("");
+
   const { conversationID } = useParams();
   const location = useLocation();
   const isOpenChat = location.pathname !== "/chat";
@@ -153,6 +155,19 @@ export default function ChatPage() {
     );
   }, []);
 
+  const conversationFilter = useMemo(() => {
+    return conversation.filter((item) => {
+      const other = item.participants.find(
+        (participant) => String(participant._id) !== String(user._id),
+      );
+
+      return (
+        item.lastChat !== null &&
+        other?.nama?.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  }, [conversation, search, user._id]);
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Navbar nama={user.nama} username={user.username}>
@@ -175,26 +190,29 @@ export default function ChatPage() {
           className={`${isOpenChat ? "hidden" : "w-full"} lg:block lg:w-3/12 px-1 min-h-0`}
         >
           <div className="p-3 bg-white my-1 flex justify-center items-center h-20 rounded">
-            <Input placeholder={"Cari nama..."} className={"rounded-xl p-3"} />
+            <Input
+              placeholder={"Cari nama..."}
+              className={"rounded-xl p-3"}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-1 h-full overflow-auto">
-            {conversation
-              .filter((f) => f.lastChat !== null)
-              .map((e) => {
-                const other = e.participants.find(
-                  (cari) => String(cari._id) !== String(user._id),
-                );
+            {conversationFilter.map((e) => {
+              const other = e.participants.find(
+                (cari) => String(cari._id) !== String(user._id),
+              );
 
-                return (
-                  <CardChat
-                    key={e._id}
-                    nama={other.nama}
-                    pesan={e.lastChat.text}
-                    jumlahPesan={e.unreadCount}
-                    onClick={() => handleOpenConversation(e._id)}
-                  />
-                );
-              })}
+              return (
+                <CardChat
+                  key={e._id}
+                  nama={other.nama}
+                  pesan={e.lastChat.text}
+                  jumlahPesan={e.unreadCount}
+                  onClick={() => handleOpenConversation(e._id)}
+                />
+              );
+            })}
           </div>
         </div>
 
