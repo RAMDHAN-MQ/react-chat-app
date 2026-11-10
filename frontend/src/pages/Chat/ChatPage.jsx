@@ -2,7 +2,7 @@ import CardChat from "../../components/ui/Card/CardChat";
 import Input from "../../components/ui/Input/Input";
 import Navbar from "../../components/ui/Nav/Navbar";
 import NavbarDropMenu from "../../components/ui/Nav/NavbarDropMenu";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 import {
   useLocation,
   useNavigate,
@@ -171,14 +171,6 @@ export default function ChatPage() {
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Navbar nama={user.nama} username={user.username}>
-        <NavbarDropMenu>
-          <User size={20} />
-          Profile
-        </NavbarDropMenu>
-        <NavbarDropMenu>
-          <Settings size={20} />
-          Setting
-        </NavbarDropMenu>
         <NavbarDropMenu variant={"danger"} onClick={handleLogout}>
           <LogOut size={20} />
           Logout

@@ -14,7 +14,7 @@ export default function NavbarDropMenu({
   }
   return (
     <div
-      className={`flex items-center gap-2 px-3 py-2 ${warna}`}
+      className={`flex items-center gap-2 px-3 py-2 ${warna} cursor-pointer`}
       onClick={onClick}
     >
       {children}
